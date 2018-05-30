@@ -1,17 +1,14 @@
 package com.example.zhangjian.rxjava2;
 
+import android.app.Activity;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
@@ -30,7 +27,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-public class MainActivity_copy extends AppCompatActivity {
+public class MainActivity2 extends Activity {
     private static String TAG = MainActivity.class.getSimpleName();
 
     @Override

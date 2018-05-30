@@ -1,38 +1,19 @@
 package com.example.zhangjian.rxjava2;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.BackpressureStrategy;
-import io.reactivex.Flowable;
-import io.reactivex.FlowableEmitter;
-import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     private static String TAG = MainActivity.class.getSimpleName();
     private ExecutorService mThreadPool = Executors.newFixedThreadPool(3);
     @Override
@@ -63,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG,"String"+integer);
             }
         });
-
 //        Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
 //            @Override
 //            public void subscribe(@NonNull ObservableEmitter<String> e) throws Exception {
