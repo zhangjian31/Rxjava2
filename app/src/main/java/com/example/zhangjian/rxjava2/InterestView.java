@@ -1,6 +1,5 @@
 package com.example.zhangjian.rxjava2;
 
-import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.net.Uri;
@@ -147,6 +146,6 @@ public class InterestView extends RelativeLayout {
     }
 
     public int getContainerLeft() {
-        return tvTitle.getRight();
+        return dip2px(getContext(), 20) + tvTitle.getMeasuredWidth();
     }
 }

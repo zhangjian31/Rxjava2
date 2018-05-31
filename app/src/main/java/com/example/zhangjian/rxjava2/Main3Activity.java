@@ -81,7 +81,7 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
 //                initTopList();
                 inData();
             }
-        }, 3000);
+        }, 500);
 
     }
 
@@ -146,18 +146,10 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
             interestView.removeItem(bean);
         } else {
             selectMap.put(bean.getId(), bean);
-            final View view = interestView.addItem(bean);
-            if (selectMap.size() == 1) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        showAddAnim(itemView, bean, view);
-                    }
-                }, 200);
-            } else {
-                showAddAnim(itemView, bean, view);
-            }
+            View view = interestView.addItem(bean);
+            showAddAnim(itemView, bean, view);
         }
+
         mInterestAdapter.setNeedShowAnimal(false);
         mInterestAdapter.notifyDataSetChanged();
     }
@@ -177,9 +169,8 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
         endPoint.set(endLocation[0], (int) (endLocation[1] - WindowUtil.getStatusBarHeight(this)));
 
 
-        int pointX = (startPoint.x + endPoint.x) / 4;
-        pointX = WindowUtil.getScreenWidth(this) / 2;
-        if (Math.abs(endLocation[0]-pointX)<dip2px(this,50)){
+        int pointX = WindowUtil.getScreenWidth(this) / 2;
+        if (Math.abs(endLocation[0] - pointX) < dip2px(this, 50)) {
             pointX = endLocation[0];
         }
         int pointY = (startPoint.y + endPoint.y) * 2 / 3;
@@ -250,9 +241,8 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
         endPoint.set(interestView.getContainerLeft(), (int) (endLocation[1] - WindowUtil.getStatusBarHeight(this) - dip2px(this, 5.5f)));
 
 
-        int pointX = (startPoint.x + endPoint.x) / 4;
-        pointX = WindowUtil.getScreenWidth(this) / 2;
-        if (Math.abs(startLocation[0]-pointX)<dip2px(this,50)){
+        int pointX = WindowUtil.getScreenWidth(this) / 2;
+        if (Math.abs(startLocation[0] - pointX) < dip2px(this, 50)) {
             pointX = startLocation[0];
         }
         int pointY = (startPoint.y + endPoint.y) * 2 / 3;
