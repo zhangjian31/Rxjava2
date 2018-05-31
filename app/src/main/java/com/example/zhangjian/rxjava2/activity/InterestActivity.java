@@ -54,7 +54,7 @@ public class InterestActivity extends Activity implements View.OnClickListener, 
     private int mCurPage = 0;
     private int mTotalPage = 3;
     private List<InterestBean> mCachedList;
-
+    private long mLastChangeTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +149,10 @@ public class InterestActivity extends Activity implements View.OnClickListener, 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_change) {
-            updateCurrentPage();
+            if (System.currentTimeMillis() - mLastChangeTime > 1000) {
+                mLastChangeTime = System.currentTimeMillis();
+                updateCurrentPage();
+            }
         } else if (v.getId() == R.id.btn_ok) {
             Toast.makeText(this, "已上传", Toast.LENGTH_SHORT).show();
         } else if (v.getId() == R.id.iv_skip || v.getId() == R.id.tv_skip) {

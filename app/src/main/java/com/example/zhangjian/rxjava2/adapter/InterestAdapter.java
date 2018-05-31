@@ -77,7 +77,7 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.ViewHo
         });
         if (isNeedShowAnimal) {
             Animation animation = new ScaleAnimation(0f, 1f, 0f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-            animation.setDuration(200);
+            animation.setDuration(100);
             animation.setStartOffset(100 * position);
             holder.itemView.startAnimation(animation);
         }
