@@ -106,7 +106,7 @@ public class InterestView extends RelativeLayout {
     public void removeItem(InterestBean bean) {
         if (container.getVisibility() == View.VISIBLE) {
             if (container.getChildCount() > 0) {
-                container.removeViewAt(container.getChildCount() - 1);
+                container.removeViewAt(0);
             }
             if (container.getChildCount() == 0) {
                 container.setVisibility(View.GONE);
