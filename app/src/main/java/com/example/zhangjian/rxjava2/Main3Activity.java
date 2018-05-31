@@ -179,8 +179,8 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
 
         int pointX = (startPoint.x + endPoint.x) / 4;
         pointX = WindowUtil.getScreenWidth(this) / 2;
-        if (Math.abs(startLocation[0]-pointX)<dip2px(this,50)){
-            pointX = startLocation[0];
+        if (Math.abs(endLocation[0]-pointX)<dip2px(this,50)){
+            pointX = endLocation[0];
         }
         int pointY = (startPoint.y + endPoint.y) * 2 / 3;
         Point controllPoint = new Point(pointX, pointY);
