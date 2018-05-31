@@ -1,4 +1,4 @@
-package com.example.zhangjian.rxjava2;
+package com.example.zhangjian.rxjava2.bean;
 
 /**
  * Created by zhangjian on 2018/5/31.

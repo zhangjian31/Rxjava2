@@ -1,9 +1,12 @@
-package com.example.zhangjian.rxjava2;
+package com.example.zhangjian.rxjava2.activity;
 
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.example.zhangjian.rxjava2.R;
+
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import java.util.ArrayList;

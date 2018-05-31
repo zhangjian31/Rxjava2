@@ -1,4 +1,4 @@
-package com.example.zhangjian.rxjava2;
+package com.example.zhangjian.rxjava2.adapter;
 
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
+
+import com.example.zhangjian.rxjava2.bean.InterestBean;
+import com.example.zhangjian.rxjava2.R;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.DraweeView;
@@ -109,7 +112,7 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.ViewHo
         this.mOnItemClickListener = mOnItemClickListener;
     }
 
-    interface OnItemClickListener {
+   public interface OnItemClickListener {
         void onItemClick(View itemView, int position);
     }
 

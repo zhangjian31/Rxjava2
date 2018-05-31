@@ -1,4 +1,4 @@
-package com.example.zhangjian.rxjava2;
+package com.example.zhangjian.rxjava2.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
@@ -15,6 +15,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.zhangjian.rxjava2.BezierEvaluator;
+import com.example.zhangjian.rxjava2.adapter.InterestAdapter;
+import com.example.zhangjian.rxjava2.bean.InterestBean;
+import com.example.zhangjian.rxjava2.utils.DpAndPx;
+import com.example.zhangjian.rxjava2.view.InterestView;
+import com.example.zhangjian.rxjava2.bean.Point;
+import com.example.zhangjian.rxjava2.R;
+import com.example.zhangjian.rxjava2.utils.WindowUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.DraweeView;
@@ -150,7 +158,7 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
                     mInterestAdapter.setNeedShowAnimal(false);
                     mInterestAdapter.notifyDataSetChanged();
                 }
-            },500);
+            }, 500);
 
         } else {
             selectMap.put(bean.getId(), bean);
@@ -170,7 +178,7 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
         int[] startLocation = new int[2];
         interestView.getLocationOnScreen(startLocation);
         Point startPoint = new Point();
-        startPoint.set(interestView.getContainerLeft(), (int) (startLocation[1] - WindowUtil.getStatusBarHeight(this) - dip2px(this, 5.5f)));
+        startPoint.set(interestView.getContainerLeft(), (int) (startLocation[1] - WindowUtil.getStatusBarHeight(this) - DpAndPx.dip2px(this, 5.5f)));
 
 
         int[] endLocation = new int[2];
@@ -180,7 +188,7 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
 
 
         int pointX = WindowUtil.getScreenWidth(this) / 2;
-        if (Math.abs(endLocation[0] - pointX) < dip2px(this, 50)) {
+        if (Math.abs(endLocation[0] - pointX) < DpAndPx.dip2px(this, 50)) {
             pointX = endLocation[0];
         }
         int pointY = (startPoint.y + endPoint.y) * 2 / 3;
@@ -188,13 +196,13 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
 
 
         AnimatorSet set = new AnimatorSet();
-        ValueAnimator scalAnim = ValueAnimator.ofFloat(dip2px(this, 34), dip2px(this, 64));
+        ValueAnimator scalAnim = ValueAnimator.ofFloat(DpAndPx.dip2px(this, 34), DpAndPx.dip2px(this, 64));
         scalAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float size = (Float) animation.getAnimatedValue();
-                mAnimAvatar.setScaleX(size / dip2px(Main3Activity.this, 64));
-                mAnimAvatar.setScaleY(size / dip2px(Main3Activity.this, 64));
+                mAnimAvatar.setScaleX(size / DpAndPx.dip2px(Main3Activity.this, 64));
+                mAnimAvatar.setScaleY(size / DpAndPx.dip2px(Main3Activity.this, 64));
                 mAnimAvatar.invalidate();
             }
         });
@@ -248,11 +256,11 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
         int[] endLocation = new int[2];
         interestView.getLocationOnScreen(endLocation);
         Point endPoint = new Point();
-        endPoint.set(interestView.getContainerLeft(), (int) (endLocation[1] - WindowUtil.getStatusBarHeight(this) - dip2px(this, 5.5f)));
+        endPoint.set(interestView.getContainerLeft(), (int) (endLocation[1] - WindowUtil.getStatusBarHeight(this) - DpAndPx.dip2px(this, 5.5f)));
 
 
         int pointX = WindowUtil.getScreenWidth(this) / 2;
-        if (Math.abs(startLocation[0] - pointX) < dip2px(this, 50)) {
+        if (Math.abs(startLocation[0] - pointX) < DpAndPx.dip2px(this, 50)) {
             pointX = startLocation[0];
         }
         int pointY = (startPoint.y + endPoint.y) * 2 / 3;
@@ -260,13 +268,13 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
 
 
         AnimatorSet set = new AnimatorSet();
-        ValueAnimator scalAnim = ValueAnimator.ofFloat(dip2px(this, 64), dip2px(this, 34));
+        ValueAnimator scalAnim = ValueAnimator.ofFloat(DpAndPx.dip2px(this, 64), DpAndPx.dip2px(this, 34));
         scalAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float size = (Float) animation.getAnimatedValue();
-                mAnimAvatar.setScaleX(size / dip2px(Main3Activity.this, 64));
-                mAnimAvatar.setScaleY(size / dip2px(Main3Activity.this, 64));
+                mAnimAvatar.setScaleX(size / DpAndPx.dip2px(Main3Activity.this, 64));
+                mAnimAvatar.setScaleY(size / DpAndPx.dip2px(Main3Activity.this, 64));
                 mAnimAvatar.invalidate();
             }
         });
@@ -352,10 +360,5 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
             "http://img0.imgtn.bdimg.com/it/u=3287998025,3231581159&fm=27&gp=0.jpg",
             "http://img3.imgtn.bdimg.com/it/u=3788682560,2600075021&fm=27&gp=0.jpg",
     };
-
-    private int dip2px(Context context, float dipValue) {
-        float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dipValue * scale + 0.5F);
-    }
 
 }

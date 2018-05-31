@@ -1,4 +1,4 @@
-package com.example.zhangjian.rxjava2;
+package com.example.zhangjian.rxjava2.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    tools:csontext="com.example.zhangjian.rxjava2.Main3Activity">
+    tools:csontext="com.example.zhangjian.rxjava2.activity.Main3Activity">
 
     <RelativeLayout
         android:id="@+id/skip_layout"
@@ -37,7 +37,7 @@
             android:textSize="16sp" />
     </RelativeLayout>
 
-    <com.example.zhangjian.rxjava2.InterestView
+    <com.example.zhangjian.rxjava2.view.InterestView
         android:id="@+id/interestView"
         android:layout_width="match_parent"
         android:layout_height="45dp"

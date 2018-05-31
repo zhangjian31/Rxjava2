@@ -2,6 +2,8 @@ package com.example.zhangjian.rxjava2;
 
 import android.animation.TypeEvaluator;
 
+import com.example.zhangjian.rxjava2.bean.Point;
+
 /**
  * Created by zhangjian on 2018/5/31.
  */

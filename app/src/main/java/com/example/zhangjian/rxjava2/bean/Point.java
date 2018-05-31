@@ -1,4 +1,4 @@
-package com.example.zhangjian.rxjava2;
+package com.example.zhangjian.rxjava2.bean;
 
 import java.io.Serializable;
 

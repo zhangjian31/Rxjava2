@@ -1,4 +1,4 @@
-package com.example.zhangjian.rxjava2;
+package com.example.zhangjian.rxjava2.view;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -12,6 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.zhangjian.rxjava2.bean.InterestBean;
+import com.example.zhangjian.rxjava2.R;
+import com.example.zhangjian.rxjava2.utils.DpAndPx;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.DraweeView;
@@ -78,7 +81,7 @@ public class InterestView extends RelativeLayout {
 
     public View addItem(InterestBean bean) {
         if (container.getVisibility() != View.VISIBLE) {
-            ValueAnimator valueAnimator = ValueAnimator.ofInt(initTitleX, dip2px(getContext(), 20));
+            ValueAnimator valueAnimator = ValueAnimator.ofInt(initTitleX, DpAndPx.dip2px(getContext(), 20));
             valueAnimator.setDuration(100);
             valueAnimator.setInterpolator(new AccelerateInterpolator());
             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -110,7 +113,7 @@ public class InterestView extends RelativeLayout {
             }
             if (container.getChildCount() == 0) {
                 container.setVisibility(View.GONE);
-                ValueAnimator valueAnimator = ValueAnimator.ofInt(dip2px(getContext(), 20), initTitleX);
+                ValueAnimator valueAnimator = ValueAnimator.ofInt(DpAndPx.dip2px(getContext(), 20), initTitleX);
                 valueAnimator.setDuration(100);
                 valueAnimator.setInterpolator(new AccelerateInterpolator());
                 valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -127,10 +130,7 @@ public class InterestView extends RelativeLayout {
         }
     }
 
-    private int dip2px(Context context, float dipValue) {
-        float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dipValue * scale + 0.5F);
-    }
+
 
     private void show(DraweeView targetView, String url) {
         Uri uri = Uri.parse(url);
@@ -146,6 +146,6 @@ public class InterestView extends RelativeLayout {
     }
 
     public int getContainerLeft() {
-        return dip2px(getContext(), 20) + tvTitle.getMeasuredWidth();
+        return DpAndPx.dip2px(getContext(), 20) + tvTitle.getMeasuredWidth();
     }
 }
