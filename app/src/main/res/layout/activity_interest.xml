@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    tools:csontext="com.example.zhangjian.rxjava2.activity.Main3Activity">
+    tools:csontext="com.example.zhangjian.rxjava2.activity.InterestActivity">
 
     <RelativeLayout
         android:id="@+id/skip_layout"
@@ -18,20 +18,20 @@
 
         <ImageView
             android:id="@+id/iv_skip"
-            android:layout_width="16dp"
-            android:layout_height="42dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
-            android:background="#ff0000" />
+            android:background="@drawable/ic_interest_next" />
 
         <TextView
             android:id="@+id/tv_skip"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginRight="9dp"
             android:layout_toLeftOf="@id/iv_skip"
-            android:gravity="center"
             android:text="跳过"
             android:textColor="#9B9B9B"
             android:textSize="16sp" />
@@ -49,31 +49,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/interestView"
-        android:layout_marginTop="0dp"
-        android:layoutAnimation="@anim/grid_layout_animation" />
+        android:layout_marginTop="0dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="34dp"
+        android:paddingRight="34dp">
 
         <Button
-            android:id="@+id/btn_add"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/btn_change"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="5dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="ADD"
+            android:text="换一换"
+            android:background="@drawable/btn_interest_change"
             android:textSize="21sp" />
 
         <Button
-            android:id="@+id/btn_remove"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/btn_ok"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Remove"
+            android:text="选好了"
+            android:background="@drawable/btn_interest_ok"
             android:textSize="21sp" />
     </LinearLayout>
 

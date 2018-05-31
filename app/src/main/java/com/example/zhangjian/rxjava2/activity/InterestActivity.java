@@ -4,18 +4,19 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.zhangjian.rxjava2.BezierEvaluator;
+import com.example.zhangjian.rxjava2.Constants;
 import com.example.zhangjian.rxjava2.adapter.InterestAdapter;
 import com.example.zhangjian.rxjava2.bean.InterestBean;
 import com.example.zhangjian.rxjava2.utils.DpAndPx;
@@ -32,137 +33,148 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class Main3Activity extends Activity implements View.OnClickListener, InterestAdapter.OnItemClickListener {
+public class InterestActivity extends Activity implements View.OnClickListener, InterestAdapter.OnItemClickListener {
 
-    private Button btnAdd, btnRemove;
+    private Button mBtnChange, mBtnOk;
+    private ImageView mIvSkip;
+    private TextView mTvSkip;
+    private InterestView mInterestView;
+    private SimpleDraweeView mAnimAvatar;
+
     private RecyclerView mRecycleview;
     private InterestAdapter mInterestAdapter;
 
-    private ImageView mIvSkip;
-    private TextView mTvSkip;
+    private Map<Integer, InterestBean> mSelectedMap = new LinkedHashMap<>();
+    private int mCurPage = 0;
+    private int mTotalPage = 3;
+    private List<InterestBean> mCachedList;
 
-    private Map<Integer, InterestBean> selectMap = new HashMap<>();
-    private int curPage = 0;
-    private int total = 3;
-    private List<InterestBean> list;
-    private InterestView interestView;
-    private SimpleDraweeView mAnimAvatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Fresco.initialize(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main3);
+        Fresco.initialize(this);
+        setContentView(R.layout.activity_interest);
+        findViews();
+        setListener();
+        initData();
 
+    }
+
+    private void findViews() {
         mRecycleview = (RecyclerView) findViewById(R.id.recycleview);
         mAnimAvatar = (SimpleDraweeView) findViewById(R.id.avatar_anim);
-
         mIvSkip = (ImageView) findViewById(R.id.iv_skip);
         mTvSkip = (TextView) findViewById(R.id.tv_skip);
-
-        interestView = (InterestView) findViewById(R.id.interestView);
-
-        mIvSkip.setOnClickListener(this);
-        mTvSkip.setOnClickListener(this);
-
-        btnAdd = (Button) findViewById(R.id.btn_add);
-        btnAdd.setOnClickListener(this);
-        btnRemove = (Button) findViewById(R.id.btn_remove);
-        btnRemove.setOnClickListener(this);
+        mInterestView = (InterestView) findViewById(R.id.interestView);
+        mBtnChange = (Button) findViewById(R.id.btn_change);
+        mBtnOk = (Button) findViewById(R.id.btn_ok);
 
         mRecycleview.setLayoutManager(new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false));
-
         mInterestAdapter = new InterestAdapter();
-        mInterestAdapter.setOnItemClickListener(this);
         mRecycleview.setAdapter(mInterestAdapter);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                initSource();
-//                initSlectMap();
-//                initTopList();
-                inData();
-            }
-        }, 500);
-
     }
 
-    private void initTopList() {
-        Set<Map.Entry<Integer, InterestBean>> set = selectMap.entrySet();
-        Iterator<Map.Entry<Integer, InterestBean>> iterator = set.iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<Integer, InterestBean> entry = iterator.next();
-            InterestBean bean = entry.getValue();
-            interestView.addItem(bean);
-        }
+    private void setListener() {
+        mBtnChange.setOnClickListener(this);
+        mBtnOk.setOnClickListener(this);
+        mIvSkip.setOnClickListener(this);
+        mTvSkip.setOnClickListener(this);
+        mInterestAdapter.setOnItemClickListener(this);
     }
 
-    private void initSlectMap() {
-
-        selectMap.put(list.get(0).getId(), list.get(0));
-        selectMap.put(list.get(3).getId(), list.get(3));
-        selectMap.put(list.get(12).getId(), list.get(12));
+    private void initData() {
+        getDataFromNet();
+//        initSlectMap();
+//        initTopList();
+        updateCurrentPage();
     }
 
-
-    private void initSource() {
-        list = new ArrayList<>();
+    /**
+     * 获取网络数据
+     */
+    private void getDataFromNet() {
+        mCachedList = new ArrayList<>();
         for (int i = 0; i < 21; i++) {
             InterestBean bean = new InterestBean();
             bean.setId(i);
             bean.setTitle("title-" + i);
-            bean.setUrl(arr[i]);
-            list.add(bean);
+            bean.setUrl(Constants.urls[i]);
+            mCachedList.add(bean);
         }
-
     }
 
-    private void inData() {
-        List<InterestBean> temp = new ArrayList<>();
-        curPage = curPage % total;
-        for (int i = curPage * 9; i < Math.min((curPage + 1) * 9, list.size()); i++) {
-            temp.add(list.get(i));
+    /**
+     * 初始化 mSelectedMap
+     */
+    private void initSlectMap() {
+        mSelectedMap.put(mCachedList.get(0).getId(), mCachedList.get(0));
+        mSelectedMap.put(mCachedList.get(3).getId(), mCachedList.get(3));
+        mSelectedMap.put(mCachedList.get(12).getId(), mCachedList.get(12));
+    }
+
+    /**
+     * 初始化顶部列表
+     */
+    private void initTopList() {
+        Set<Map.Entry<Integer, InterestBean>> set = mSelectedMap.entrySet();
+        Iterator<Map.Entry<Integer, InterestBean>> iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Integer, InterestBean> entry = iterator.next();
+            InterestBean bean = entry.getValue();
+            mInterestView.addItem(bean);
         }
-        curPage++;
-        mInterestAdapter.setData(temp, selectMap);
+    }
+
+    /**
+     * 更新当前页面九宫格
+     */
+    private void updateCurrentPage() {
+        List<InterestBean> list = new ArrayList<>();
+        mCurPage = mCurPage % mTotalPage;
+        for (int i = mCurPage * 9; i < Math.min((mCurPage + 1) * 9, mCachedList.size()); i++) {
+            list.add(mCachedList.get(i));
+        }
+        mCurPage++;
+        mInterestAdapter.setData(list, mSelectedMap);
     }
 
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btn_add) {
-//            addItem();
-        } else if (v.getId() == R.id.btn_remove) {
-//            removeItem();
+        if (v.getId() == R.id.btn_change) {
+            updateCurrentPage();
+        } else if (v.getId() == R.id.btn_ok) {
+            Toast.makeText(this, "已上传", Toast.LENGTH_SHORT).show();
         } else if (v.getId() == R.id.iv_skip || v.getId() == R.id.tv_skip) {
-            inData();
+            startActivity(new Intent(this, HomeActivity.class));
         }
     }
 
     @Override
     public void onItemClick(final View itemView, int position) {
         final InterestBean bean = mInterestAdapter.getData().get(position);
-        if (selectMap.containsKey(bean.getId())) {
+        if (mSelectedMap.containsKey(bean.getId())) {
             showRemoveAnim(itemView, bean);
-            interestView.postDelayed(new Runnable() {
+            mInterestView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    selectMap.remove(bean.getId());
-                    interestView.removeItem(bean);
+                    mSelectedMap.remove(bean.getId());
+                    mInterestView.removeItem(bean);
                     mInterestAdapter.setNeedShowAnimal(false);
                     mInterestAdapter.notifyDataSetChanged();
                 }
             }, 500);
 
         } else {
-            selectMap.put(bean.getId(), bean);
-            View view = interestView.addItem(bean);
+            mSelectedMap.put(bean.getId(), bean);
+            View view = mInterestView.addItem(bean);
             showAddAnim(itemView, bean, view);
             mInterestAdapter.setNeedShowAnimal(false);
             mInterestAdapter.notifyDataSetChanged();
@@ -176,9 +188,9 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
         show(mAnimAvatar, bean.getUrl());
 
         int[] startLocation = new int[2];
-        interestView.getLocationOnScreen(startLocation);
+        mInterestView.getLocationOnScreen(startLocation);
         Point startPoint = new Point();
-        startPoint.set(interestView.getContainerLeft(), (int) (startLocation[1] - WindowUtil.getStatusBarHeight(this) - DpAndPx.dip2px(this, 5.5f)));
+        startPoint.set(mInterestView.getContainerLeft(), (int) (startLocation[1] - WindowUtil.getStatusBarHeight(this) - DpAndPx.dip2px(this, 5.5f)));
 
 
         int[] endLocation = new int[2];
@@ -201,8 +213,8 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float size = (Float) animation.getAnimatedValue();
-                mAnimAvatar.setScaleX(size / DpAndPx.dip2px(Main3Activity.this, 64));
-                mAnimAvatar.setScaleY(size / DpAndPx.dip2px(Main3Activity.this, 64));
+                mAnimAvatar.setScaleX(size / DpAndPx.dip2px(InterestActivity.this, 64));
+                mAnimAvatar.setScaleY(size / DpAndPx.dip2px(InterestActivity.this, 64));
                 mAnimAvatar.invalidate();
             }
         });
@@ -254,9 +266,9 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
 
 
         int[] endLocation = new int[2];
-        interestView.getLocationOnScreen(endLocation);
+        mInterestView.getLocationOnScreen(endLocation);
         Point endPoint = new Point();
-        endPoint.set(interestView.getContainerLeft(), (int) (endLocation[1] - WindowUtil.getStatusBarHeight(this) - DpAndPx.dip2px(this, 5.5f)));
+        endPoint.set(mInterestView.getContainerLeft(), (int) (endLocation[1] - WindowUtil.getStatusBarHeight(this) - DpAndPx.dip2px(this, 5.5f)));
 
 
         int pointX = WindowUtil.getScreenWidth(this) / 2;
@@ -273,8 +285,8 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float size = (Float) animation.getAnimatedValue();
-                mAnimAvatar.setScaleX(size / DpAndPx.dip2px(Main3Activity.this, 64));
-                mAnimAvatar.setScaleY(size / DpAndPx.dip2px(Main3Activity.this, 64));
+                mAnimAvatar.setScaleX(size / DpAndPx.dip2px(InterestActivity.this, 64));
+                mAnimAvatar.setScaleY(size / DpAndPx.dip2px(InterestActivity.this, 64));
                 mAnimAvatar.invalidate();
             }
         });
@@ -331,34 +343,5 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
         targetView.setController(controller);
     }
 
-
-    String[] arr = {
-            "http://img0.imgtn.bdimg.com/it/u=1717056030,451974468&fm=200&gp=0.jpg",
-            "http://img0.imgtn.bdimg.com/it/u=4085174256,2543265040&fm=200&gp=0.jpg",
-            "http://img0.imgtn.bdimg.com/it/u=845061817,3482904951&fm=27&gp=0.jpg",
-            "http://img4.imgtn.bdimg.com/it/u=2913061120,181996338&fm=27&gp=0.jpg",
-            "http://img2.imgtn.bdimg.com/it/u=2534733008,3328446862&fm=27&gp=0.jpg",
-            "http://img5.imgtn.bdimg.com/it/u=3024515029,2082669158&fm=27&gp=0.jpg",
-            "http://img5.imgtn.bdimg.com/it/u=2869031647,3499077470&fm=27&gp=0.jpg",
-            "http://img3.imgtn.bdimg.com/it/u=2988065565,1735810570&fm=27&gp=0.jpg",
-            "http://img2.imgtn.bdimg.com/it/u=1780538556,1183961030&fm=27&gp=0.jpg",
-            "http://img2.imgtn.bdimg.com/it/u=2188003138,392765800&fm=27&gp=0.jpg",
-            "http://img1.imgtn.bdimg.com/it/u=3099062169,2136497672&fm=27&gp=0.jpg",
-            "http://img0.imgtn.bdimg.com/it/u=1085267197,1471777511&fm=27&gp=0.jpg",
-            "http://img1.imgtn.bdimg.com/it/u=1769067601,404951922&fm=27&gp=0.jpg",
-            "http://img5.imgtn.bdimg.com/it/u=3363129096,733650575&fm=27&gp=0.jpg",
-            "http://img0.imgtn.bdimg.com/it/u=737470215,726833067&fm=27&gp=0.jpg",
-            "http://img5.imgtn.bdimg.com/it/u=3120202809,152452100&fm=27&gp=0.jpg",
-            "http://img0.imgtn.bdimg.com/it/u=1345300409,2233606009&fm=27&gp=0.jpg",
-            "http://img5.imgtn.bdimg.com/it/u=291415079,761330040&fm=27&gp=0.jpg",
-            "http://img5.imgtn.bdimg.com/it/u=3651324592,2597153327&fm=27&gp=0.jpg",
-            "http://img1.imgtn.bdimg.com/it/u=3711505074,3910698905&fm=27&gp=0.jpg",
-            "http://img5.imgtn.bdimg.com/it/u=704139227,1008355068&fm=27&gp=0.jpg",
-            "http://img2.imgtn.bdimg.com/it/u=162602129,2576598321&fm=27&gp=0.jpg",
-            "http://img5.imgtn.bdimg.com/it/u=2329734498,1899200243&fm=27&gp=0.jpg",
-            "http://img2.imgtn.bdimg.com/it/u=467113224,2345770724&fm=200&gp=0.jpg",
-            "http://img0.imgtn.bdimg.com/it/u=3287998025,3231581159&fm=27&gp=0.jpg",
-            "http://img3.imgtn.bdimg.com/it/u=3788682560,2600075021&fm=27&gp=0.jpg",
-    };
 
 }

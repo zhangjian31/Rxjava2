@@ -100,7 +100,7 @@ public class InterestView extends RelativeLayout {
         View root = LayoutInflater.from(getContext()).inflate(R.layout.item_top, null);
         SimpleDraweeView imageView = (SimpleDraweeView) root.findViewById(R.id.avatar);
         show(imageView, bean.getUrl());
-        root.setVisibility(INVISIBLE);
+//        root.setVisibility(INVISIBLE);
         container.addView(root, 0);
         return root;
     }
