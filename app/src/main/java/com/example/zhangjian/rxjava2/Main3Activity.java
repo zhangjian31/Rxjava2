@@ -1,5 +1,7 @@
 package com.example.zhangjian.rxjava2;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
@@ -8,14 +10,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -35,12 +32,7 @@ import java.util.Set;
 
 public class Main3Activity extends Activity implements View.OnClickListener, InterestAdapter.OnItemClickListener {
 
-    private TextView tvTitle;
-    private LinearLayout container;
-    private RelativeLayout title_layout;
     private Button btnAdd, btnRemove;
-    private HorizontalScrollView scrollview;
-    private int initTitleX;
     private RecyclerView mRecycleview;
     private InterestAdapter mInterestAdapter;
 
@@ -51,20 +43,22 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
     private int curPage = 0;
     private int total = 3;
     private List<InterestBean> list;
+    private InterestView interestView;
+    private SimpleDraweeView mAnimAvatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Fresco.initialize(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
-        tvTitle = (TextView) findViewById(R.id.tv_title);
-        title_layout = (RelativeLayout) findViewById(R.id.title_layout);
-        container = (LinearLayout) findViewById(R.id.contain_layout);
-        scrollview = (HorizontalScrollView) findViewById(R.id.scrollview);
+
         mRecycleview = (RecyclerView) findViewById(R.id.recycleview);
+        mAnimAvatar = (SimpleDraweeView) findViewById(R.id.avatar_anim);
 
         mIvSkip = (ImageView) findViewById(R.id.iv_skip);
         mTvSkip = (TextView) findViewById(R.id.tv_skip);
+
+        interestView = (InterestView) findViewById(R.id.interestView);
 
         mIvSkip.setOnClickListener(this);
         mTvSkip.setOnClickListener(this);
@@ -75,7 +69,6 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
         btnRemove.setOnClickListener(this);
 
         mRecycleview.setLayoutManager(new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false));
-//        mRecycleview.addItemDecoration(new GridSpacingItemDecoration(3, 19, true));
 
         mInterestAdapter = new InterestAdapter();
         mInterestAdapter.setOnItemClickListener(this);
@@ -84,12 +77,10 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
             @Override
             public void run() {
                 initSource();
-                initSlectMap();
-                initTopList();
+//                initSlectMap();
+//                initTopList();
                 inData();
             }
-
-
         }, 3000);
 
     }
@@ -100,7 +91,7 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
         while (iterator.hasNext()) {
             Map.Entry<Integer, InterestBean> entry = iterator.next();
             InterestBean bean = entry.getValue();
-            addItem(bean);
+            interestView.addItem(bean);
         }
     }
 
@@ -134,13 +125,6 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
         mInterestAdapter.setData(temp, selectMap);
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        int[] location = new int[2];
-        tvTitle.getLocationOnScreen(location);
-        initTitleX = location[0];
-    }
 
     @Override
     public void onClick(View v) {
@@ -153,75 +137,190 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
         }
     }
 
-    private void removeItem(InterestBean bean) {
-        if (container.getVisibility() == View.VISIBLE) {
-            if (container.getChildCount() > 0) {
-                container.removeViewAt(container.getChildCount() - 1);
-            }
-            if (container.getChildCount() == 0) {
-                container.setVisibility(View.GONE);
-                ValueAnimator valueAnimator = ValueAnimator.ofInt(dip2px(Main3Activity.this, 20), initTitleX);
-                valueAnimator.setDuration(100);
-                valueAnimator.setInterpolator(new AccelerateInterpolator());
-                valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        int x = (Integer) animation.getAnimatedValue();
-                        RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) tvTitle.getLayoutParams();
-                        p.leftMargin = x;
-                        tvTitle.setLayoutParams(p);
-                    }
-                });
-                valueAnimator.start();
-            }
-        }
-    }
-
-    private void addItem(InterestBean bean) {
-        if (container.getVisibility() != View.VISIBLE) {
-            ValueAnimator valueAnimator = ValueAnimator.ofInt(initTitleX, dip2px(Main3Activity.this, 20));
-            valueAnimator.setDuration(100);
-            valueAnimator.setInterpolator(new AccelerateInterpolator());
-            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    int x = (Integer) animation.getAnimatedValue();
-                    RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) tvTitle.getLayoutParams();
-                    p.leftMargin = x;
-                    p.addRule(RelativeLayout.CENTER_IN_PARENT, 0);
-                    tvTitle.setLayoutParams(p);
-                }
-            });
-            valueAnimator.start();
-            container.setVisibility(View.VISIBLE);
-        }
-        View root = LayoutInflater.from(this).inflate(R.layout.item_top, null);
-        SimpleDraweeView imageView = (SimpleDraweeView) root.findViewById(R.id.avatar);
-        show(imageView, bean.getUrl());
-//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dip2px(this, 50), dip2px(this, 50));
-//        params.leftMargin = dip2px(this, 10);
-//        params.rightMargin = dip2px(this, 10);
-        container.addView(root,0);
-    }
-
-
-    public int dip2px(Context context, float dipValue) {
-        float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dipValue * scale + 0.5F);
-    }
-
     @Override
-    public void onItemClick(View itemView, int position) {
-        InterestBean bean = mInterestAdapter.getData().get(position);
+    public void onItemClick(final View itemView, int position) {
+        final InterestBean bean = mInterestAdapter.getData().get(position);
         if (selectMap.containsKey(bean.getId())) {
+            showRemoveAnim(itemView, bean);
             selectMap.remove(bean.getId());
-            removeItem(bean);
+            interestView.removeItem(bean);
         } else {
             selectMap.put(bean.getId(), bean);
-            addItem(bean);
+            final View view = interestView.addItem(bean);
+            if (selectMap.size() == 1) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showAddAnim(itemView, bean, view);
+                    }
+                }, 200);
+            } else {
+                showAddAnim(itemView, bean, view);
+            }
         }
         mInterestAdapter.setNeedShowAnimal(false);
         mInterestAdapter.notifyDataSetChanged();
+    }
+
+    private void showRemoveAnim(View itemView, InterestBean bean) {
+        show(mAnimAvatar, bean.getUrl());
+
+        int[] startLocation = new int[2];
+        interestView.getLocationOnScreen(startLocation);
+        Point startPoint = new Point();
+        startPoint.set(interestView.getContainerLeft(), (int) (startLocation[1] - WindowUtil.getStatusBarHeight(this) - dip2px(this, 5.5f)));
+
+
+        int[] endLocation = new int[2];
+        itemView.findViewById(R.id.avatar).getLocationOnScreen(endLocation);
+        Point endPoint = new Point();
+        endPoint.set(endLocation[0], (int) (endLocation[1] - WindowUtil.getStatusBarHeight(this)));
+
+
+        int pointX = (startPoint.x + endPoint.x) / 4;
+        pointX = WindowUtil.getScreenWidth(this) / 2;
+        if (Math.abs(startLocation[0]-pointX)<dip2px(this,50)){
+            pointX = startLocation[0];
+        }
+        int pointY = (startPoint.y + endPoint.y) * 2 / 3;
+        Point controllPoint = new Point(pointX, pointY);
+
+
+        AnimatorSet set = new AnimatorSet();
+        ValueAnimator scalAnim = ValueAnimator.ofFloat(dip2px(this, 34), dip2px(this, 64));
+        scalAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float size = (Float) animation.getAnimatedValue();
+                mAnimAvatar.setScaleX(size / dip2px(Main3Activity.this, 64));
+                mAnimAvatar.setScaleY(size / dip2px(Main3Activity.this, 64));
+                mAnimAvatar.invalidate();
+            }
+        });
+
+        ValueAnimator animator = ValueAnimator.ofObject(new BezierEvaluator(controllPoint), startPoint, endPoint);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                Point point = (Point) animation.getAnimatedValue();
+                mAnimAvatar.setX(point.x);
+                mAnimAvatar.setY(point.y);
+                mAnimAvatar.invalidate();
+            }
+        });
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                mAnimAvatar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mAnimAvatar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        set.setDuration(500);
+        set.play(scalAnim).with(animator);
+        set.start();
+
+    }
+
+
+    private void showAddAnim(View itemView, InterestBean bean, final View desView) {
+        show(mAnimAvatar, bean.getUrl());
+
+        int[] startLocation = new int[2];
+        itemView.findViewById(R.id.avatar).getLocationOnScreen(startLocation);
+        Point startPoint = new Point();
+        startPoint.set(startLocation[0], (int) (startLocation[1] - WindowUtil.getStatusBarHeight(this)));
+
+
+        int[] endLocation = new int[2];
+        interestView.getLocationOnScreen(endLocation);
+        Point endPoint = new Point();
+        endPoint.set(interestView.getContainerLeft(), (int) (endLocation[1] - WindowUtil.getStatusBarHeight(this) - dip2px(this, 5.5f)));
+
+
+        int pointX = (startPoint.x + endPoint.x) / 4;
+        pointX = WindowUtil.getScreenWidth(this) / 2;
+        if (Math.abs(startLocation[0]-pointX)<dip2px(this,50)){
+            pointX = startLocation[0];
+        }
+        int pointY = (startPoint.y + endPoint.y) * 2 / 3;
+        Point controllPoint = new Point(pointX, pointY);
+
+
+        AnimatorSet set = new AnimatorSet();
+        ValueAnimator scalAnim = ValueAnimator.ofFloat(dip2px(this, 64), dip2px(this, 34));
+        scalAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float size = (Float) animation.getAnimatedValue();
+                mAnimAvatar.setScaleX(size / dip2px(Main3Activity.this, 64));
+                mAnimAvatar.setScaleY(size / dip2px(Main3Activity.this, 64));
+                mAnimAvatar.invalidate();
+            }
+        });
+
+        ValueAnimator animator = ValueAnimator.ofObject(new BezierEvaluator(controllPoint), startPoint, endPoint);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                Point point = (Point) animation.getAnimatedValue();
+                mAnimAvatar.setX(point.x);
+                mAnimAvatar.setY(point.y);
+                mAnimAvatar.invalidate();
+            }
+        });
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                mAnimAvatar.setVisibility(View.VISIBLE);
+                desView.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mAnimAvatar.setVisibility(View.GONE);
+                desView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                desView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        set.setDuration(500);
+        set.play(scalAnim).with(animator);
+        set.start();
+
+    }
+
+    private void show(DraweeView targetView, String url) {
+        Uri uri = Uri.parse(url);
+        ImageRequest request = ImageRequestBuilder.newBuilderWithSource(uri)
+                .setResizeOptions(new ResizeOptions(300, 300))
+                .build();
+
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setOldController(targetView.getController())
+                .setImageRequest(request)
+                .build();
+        targetView.setController(controller);
     }
 
 
@@ -254,16 +353,9 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
             "http://img3.imgtn.bdimg.com/it/u=3788682560,2600075021&fm=27&gp=0.jpg",
     };
 
-    private void show(DraweeView targetView, String url) {
-        Uri uri = Uri.parse(url);
-        ImageRequest request = ImageRequestBuilder.newBuilderWithSource(uri)
-                .setResizeOptions(new ResizeOptions(300, 300))
-                .build();
-
-        DraweeController controller = Fresco.newDraweeControllerBuilder()
-                .setOldController(targetView.getController())
-                .setImageRequest(request)
-                .build();
-        targetView.setController(controller);
+    private int dip2px(Context context, float dipValue) {
+        float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5F);
     }
+
 }
