@@ -141,7 +141,7 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
     public void onItemClick(final View itemView, int position) {
         final InterestBean bean = mInterestAdapter.getData().get(position);
         if (selectMap.containsKey(bean.getId())) {
-//            showRemoveAnim(itemView, bean);
+            showRemoveAnim(itemView, bean);
             interestView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
