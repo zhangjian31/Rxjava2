@@ -8,4 +8,5 @@
 7、Action和Func函数区别
    Action包装的是有参数的
    Func包装的是有返回值的
-8、
+8、map对象转换，flatmap对象转换+Observable封装
+9、just参数泛型整体，from参数数组、列表，当from=1是调用just
