@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.zhangjian.rxjava2.bean.InterestBean;
 import com.example.zhangjian.rxjava2.R;
 import com.example.zhangjian.rxjava2.utils.DpAndPx;
+import com.example.zhangjian.rxjava2.utils.WindowUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.DraweeView;
@@ -74,9 +75,7 @@ public class InterestView extends RelativeLayout {
     @Override
     public void onWindowFocusChanged(boolean hasWindowFocus) {
         super.onWindowFocusChanged(hasWindowFocus);
-        int[] location = new int[2];
-        tvTitle.getLocationOnScreen(location);
-        initTitleX = location[0];
+        initTitleX = (WindowUtil.getScreenWidth(getContext()) - tvTitle.getWidth()) / 2;
     }
 
     public View addItem(InterestBean bean) {
@@ -129,7 +128,6 @@ public class InterestView extends RelativeLayout {
             }
         }
     }
-
 
 
     private void show(DraweeView targetView, String url) {

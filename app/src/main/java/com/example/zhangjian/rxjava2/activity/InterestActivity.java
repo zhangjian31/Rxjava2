@@ -116,7 +116,7 @@ public class InterestActivity extends Activity implements View.OnClickListener, 
     private void initSlectMap() {
         mSelectedMap.put(mCachedList.get(0).getId(), mCachedList.get(0));
         mSelectedMap.put(mCachedList.get(3).getId(), mCachedList.get(3));
-        mSelectedMap.put(mCachedList.get(12).getId(), mCachedList.get(12));
+//        mSelectedMap.put(mCachedList.get(12).getId(), mCachedList.get(12));
     }
 
     /**
