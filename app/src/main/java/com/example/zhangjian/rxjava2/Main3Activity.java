@@ -141,13 +141,23 @@ public class Main3Activity extends Activity implements View.OnClickListener, Int
     public void onItemClick(final View itemView, int position) {
         final InterestBean bean = mInterestAdapter.getData().get(position);
         if (selectMap.containsKey(bean.getId())) {
-            showRemoveAnim(itemView, bean);
-            selectMap.remove(bean.getId());
-            interestView.removeItem(bean);
+//            showRemoveAnim(itemView, bean);
+            interestView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    selectMap.remove(bean.getId());
+                    interestView.removeItem(bean);
+                    mInterestAdapter.setNeedShowAnimal(false);
+                    mInterestAdapter.notifyDataSetChanged();
+                }
+            },500);
+
         } else {
             selectMap.put(bean.getId(), bean);
             View view = interestView.addItem(bean);
             showAddAnim(itemView, bean, view);
+            mInterestAdapter.setNeedShowAnimal(false);
+            mInterestAdapter.notifyDataSetChanged();
         }
 
         mInterestAdapter.setNeedShowAnimal(false);
