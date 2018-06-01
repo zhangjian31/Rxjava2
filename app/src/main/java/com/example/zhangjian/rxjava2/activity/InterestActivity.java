@@ -164,16 +164,11 @@ public class InterestActivity extends Activity implements View.OnClickListener, 
     public void onItemClick(final View itemView, int position) {
         final InterestBean bean = mInterestAdapter.getData().get(position);
         if (mSelectedMap.containsKey(bean.getId())) {
-            showRemoveAnim(itemView, bean);
-            mInterestView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mSelectedMap.remove(bean.getId());
-                    mInterestView.removeItem(bean);
-                    mInterestAdapter.setNeedShowAnimal(false);
-                    mInterestAdapter.notifyDataSetChanged();
-                }
-            }, 500);
+//            showRemoveAnim(itemView, bean);
+            mSelectedMap.remove(bean.getId());
+            mInterestView.removeItem(bean);
+            mInterestAdapter.setNeedShowAnimal(false);
+            mInterestAdapter.notifyDataSetChanged();
 
         } else {
             mSelectedMap.put(bean.getId(), bean);
