@@ -2,6 +2,7 @@ package com.example.zhangjian.rxjava2.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
@@ -9,7 +10,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -181,6 +184,14 @@ public class InterestActivity extends Activity implements View.OnClickListener, 
             mInterestAdapter.notifyDataSetChanged();
 
         } else {
+            Log.d("positon=",""+position);
+            ObjectAnimator scaleX = ObjectAnimator.ofFloat(itemView, "scaleX", 1.0f, 1.2f,1.0f);
+            ObjectAnimator scaleY = ObjectAnimator.ofFloat(itemView, "scaleY", 1.0f, 1.2f,1.0f);
+            AnimatorSet set =new AnimatorSet();
+            set.play(scaleX).with(scaleY);
+            set.setDuration(1000);
+            set.start();
+
             mSelectedMap.put(bean.getId(), bean);
             mInterestView.addItem(bean);
             showAddAnim(itemView, bean);
