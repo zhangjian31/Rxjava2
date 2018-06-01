@@ -39,7 +39,7 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.ViewHo
         this.data.clear();
         this.data.addAll(data);
         this.selectMap = selectMap;
-        isNeedShowAnimal = true;
+        setNeedShowAnimal(true);
         notifyDataSetChanged();
     }
 
@@ -79,6 +79,9 @@ public class InterestAdapter extends RecyclerView.Adapter<InterestAdapter.ViewHo
             animation.setDuration(100);
             animation.setStartOffset(100 * position);
             holder.itemView.startAnimation(animation);
+            if (position == data.size() - 1) {
+                setNeedShowAnimal(false);
+            }
         }
     }
 

@@ -2,7 +2,6 @@ package com.example.zhangjian.rxjava2.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
@@ -10,11 +9,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.ScaleAnimation;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -179,21 +178,32 @@ public class InterestActivity extends Activity implements View.OnClickListener, 
 //            showRemoveAnim(itemView, bean);
             mSelectedMap.remove(bean.getId());
             mInterestView.removeItem(bean);
-            mInterestAdapter.setNeedShowAnimal(false);
-            mInterestAdapter.notifyItemChanged(position);
+//            mInterestAdapter.setNeedShowAnimal(false);
+//            mInterestAdapter.notifyItemChanged(position);
+            itemView.findViewById(R.id.select_view).setBackgroundResource(R.drawable.bg_circle_ffffff);
         } else {
             mSelectedMap.put(bean.getId(), bean);
             mInterestView.addItem(bean);
             showAddAnim(itemView, bean);
-            mInterestAdapter.setNeedShowAnimal(false);
-            mInterestAdapter.notifyItemChanged(position);
+//            mInterestAdapter.setNeedShowAnimal(false);
+//            mInterestAdapter.notifyItemChanged(position);
+            itemView.findViewById(R.id.select_view).setBackgroundResource(R.drawable.bg_circle_ffe24b);
 
-            ObjectAnimator scaleX = ObjectAnimator.ofFloat( itemView, "scaleX", 1.0f, 1.2f, 1.0f);
-            ObjectAnimator scaleY = ObjectAnimator.ofFloat( itemView, "scaleY", 1.0f, 1.2f, 1.0f);
-            AnimatorSet set = new AnimatorSet();
-            set.play(scaleX).with(scaleY);
-            set.setDuration(1000);
-            set.start();
+            ValueAnimator animator = ValueAnimator.ofFloat(DpAndPx.dip2px(this, 80), DpAndPx.dip2px(this, 95), DpAndPx.dip2px(this, 80));
+            animator.setDuration(500);
+            animator.setInterpolator(new AccelerateDecelerateInterpolator());
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    View view = itemView.findViewById(R.id.select_view);
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view.getLayoutParams();
+                    float v = (Float) animation.getAnimatedValue();
+                    params.width = (int) v;
+                    params.height = (int) v;
+                    view.setLayoutParams(params);
+                }
+            });
+            animator.start();
         }
     }
 
