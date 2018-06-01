@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
-
 import com.example.zhangjian.rxjava2.bean.InterestBean;
 import com.example.zhangjian.rxjava2.R;
 import com.facebook.drawee.backends.pipeline.Fresco;

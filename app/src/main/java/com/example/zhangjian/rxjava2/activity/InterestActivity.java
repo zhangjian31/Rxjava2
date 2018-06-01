@@ -78,7 +78,6 @@ public class InterestActivity extends Activity implements View.OnClickListener, 
         mInterestView = (InterestView) findViewById(R.id.interestView);
         mBtnChange = (Button) findViewById(R.id.btn_change);
         mBtnOk = (Button) findViewById(R.id.btn_ok);
-
         mRecycleview.setLayoutManager(new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false));
         mInterestAdapter = new InterestAdapter();
         mRecycleview.setAdapter(mInterestAdapter);
@@ -93,7 +92,7 @@ public class InterestActivity extends Activity implements View.OnClickListener, 
         mInterestView.setOnItemClickToRemove(new InterestView.OnItemClickToRemove() {
             @Override
             public void onRemove(InterestBean bean) {
-                if (bean==null){
+                if (bean == null) {
                     return;
                 }
                 mSelectedMap.remove(bean.getId());
@@ -181,26 +180,21 @@ public class InterestActivity extends Activity implements View.OnClickListener, 
             mSelectedMap.remove(bean.getId());
             mInterestView.removeItem(bean);
             mInterestAdapter.setNeedShowAnimal(false);
-            mInterestAdapter.notifyDataSetChanged();
-
+            mInterestAdapter.notifyItemChanged(position);
         } else {
-            Log.d("positon=",""+position);
-            ObjectAnimator scaleX = ObjectAnimator.ofFloat(itemView, "scaleX", 1.0f, 1.2f,1.0f);
-            ObjectAnimator scaleY = ObjectAnimator.ofFloat(itemView, "scaleY", 1.0f, 1.2f,1.0f);
-            AnimatorSet set =new AnimatorSet();
-            set.play(scaleX).with(scaleY);
-            set.setDuration(1000);
-            set.start();
-
             mSelectedMap.put(bean.getId(), bean);
             mInterestView.addItem(bean);
             showAddAnim(itemView, bean);
             mInterestAdapter.setNeedShowAnimal(false);
-            mInterestAdapter.notifyDataSetChanged();
-        }
+            mInterestAdapter.notifyItemChanged(position);
 
-        mInterestAdapter.setNeedShowAnimal(false);
-        mInterestAdapter.notifyDataSetChanged();
+            ObjectAnimator scaleX = ObjectAnimator.ofFloat( itemView, "scaleX", 1.0f, 1.2f, 1.0f);
+            ObjectAnimator scaleY = ObjectAnimator.ofFloat( itemView, "scaleY", 1.0f, 1.2f, 1.0f);
+            AnimatorSet set = new AnimatorSet();
+            set.play(scaleX).with(scaleY);
+            set.setDuration(1000);
+            set.start();
+        }
     }
 
     private void showRemoveAnim(View itemView, InterestBean bean) {
