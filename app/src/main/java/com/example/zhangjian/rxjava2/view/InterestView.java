@@ -107,21 +107,29 @@ public class InterestView extends RelativeLayout {
             valueAnimator.start();
 
             selectedAdapter.addData(bean);
-            recyclerView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
+            recyclerView.scrollToPosition(0);
+//            recyclerView.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
                     recyclerView.setVisibility(View.VISIBLE);
-                }
-            }, 300);
+//                }
+//            }, 500);
         } else {
             selectedAdapter.addData(bean);
-            manager.findViewByPosition(0).setVisibility(INVISIBLE);
-            manager.findViewByPosition(0).postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    manager.findViewByPosition(0).setVisibility(VISIBLE);
-                }
-            }, 300);
+            recyclerView.scrollToPosition(0);
+//            final View view = recyclerView.getChildAt(0);
+//            if (view != null) {
+//                view.setVisibility(INVISIBLE);
+//                view.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (view != null){
+//                            view.setVisibility(VISIBLE);
+//                        }
+//                    }
+//                }, 500);
+//            }
+
         }
     }
 

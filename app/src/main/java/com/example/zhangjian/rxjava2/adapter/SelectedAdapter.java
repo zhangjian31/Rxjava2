@@ -41,7 +41,8 @@ public class SelectedAdapter extends RecyclerView.Adapter<SelectedAdapter.ViewHo
             return;
         }
         mList.add(0, bean);
-        notifyDataSetChanged();
+        notifyItemInserted(0);
+//        notifyDataSetChanged();
     }
 
     public List<InterestBean> getData() {
@@ -62,14 +63,17 @@ public class SelectedAdapter extends RecyclerView.Adapter<SelectedAdapter.ViewHo
             return;
         }
         Iterator<InterestBean> it = mList.iterator();
+        int position = -1;
         while (it.hasNext()) {
+            position++;
             InterestBean temp = it.next();
             if (temp != null && temp.getId() == bean.getId()) {
                 it.remove();
                 break;
             }
         }
-        notifyDataSetChanged();
+        notifyItemRemoved(position);
+
     }
 
     @Override
@@ -79,6 +83,15 @@ public class SelectedAdapter extends RecyclerView.Adapter<SelectedAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+        if (position==0){
+            holder.itemView.setVisibility(View.INVISIBLE);
+            holder.itemView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    holder.itemView.setVisibility(View.VISIBLE);
+                }
+            },500);
+        }
         show(holder.imageView, mList.get(position).getUrl());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

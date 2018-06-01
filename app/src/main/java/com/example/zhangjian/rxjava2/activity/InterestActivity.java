@@ -11,6 +11,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -298,7 +300,7 @@ public class InterestActivity extends Activity implements View.OnClickListener, 
         if (Math.abs(startLocation[0] - pointX) < DpAndPx.dip2px(this, 50)) {
             pointX = startLocation[0];
         }
-        int pointY = (startPoint.y + endPoint.y) * 2 / 3;
+        int  pointY= endPoint.y-DpAndPx.dip2px(this,200);
         Point controllPoint = new Point(pointX, pointY);
 
 
@@ -344,7 +346,7 @@ public class InterestActivity extends Activity implements View.OnClickListener, 
 
             }
         });
-        set.setDuration(300);
+        set.setDuration(500);
         set.play(scalAnim).with(animator);
         set.start();
 
