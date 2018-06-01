@@ -91,7 +91,7 @@ public class InterestView extends RelativeLayout {
 
     public void addItem(final InterestBean bean) {
         if (selectedAdapter.getItemCount() == 0) {
-            ValueAnimator valueAnimator = ValueAnimator.ofInt(initTitleX, DpAndPx.dip2px(getContext(), 20));
+            ValueAnimator valueAnimator = ValueAnimator.ofInt(initTitleX, DpAndPx.dip2px(getContext(), 30));
             valueAnimator.setDuration(300);
             valueAnimator.setInterpolator(new AccelerateInterpolator());
             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -131,7 +131,7 @@ public class InterestView extends RelativeLayout {
             selectedAdapter.removeData(bean);
             if (selectedAdapter.getItemCount() == 0) {
                 recyclerView.setVisibility(View.GONE);
-                ValueAnimator valueAnimator = ValueAnimator.ofInt(DpAndPx.dip2px(getContext(), 20), initTitleX);
+                ValueAnimator valueAnimator = ValueAnimator.ofInt(DpAndPx.dip2px(getContext(), 30), initTitleX);
                 valueAnimator.setDuration(300);
                 valueAnimator.setInterpolator(new AccelerateInterpolator());
                 valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -149,7 +149,7 @@ public class InterestView extends RelativeLayout {
     }
 
     public int getContainerLeft() {
-        return DpAndPx.dip2px(getContext(), 20) + tvTitle.getMeasuredWidth();
+        return DpAndPx.dip2px(getContext(), 30) + tvTitle.getMeasuredWidth();
     }
 
     private OnItemClickToRemove mOnItemClickToRemove;

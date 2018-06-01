@@ -49,20 +49,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/interestView"
+        android:paddingLeft="23dp"
+        android:paddingRight="23dp"
         android:layout_marginTop="0dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recycleview"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        android:paddingLeft="34dp"
-        android:paddingRight="34dp">
+        android:gravity="center_vertical"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
 
         <Button
             android:id="@+id/btn_change"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
             android:gravity="center"
@@ -73,7 +76,7 @@
         <Button
             android:id="@+id/btn_ok"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:layout_marginLeft="5dp"
             android:layout_weight="1"
             android:gravity="center"
