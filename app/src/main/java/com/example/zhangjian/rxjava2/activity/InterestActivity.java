@@ -87,6 +87,16 @@ public class InterestActivity extends Activity implements View.OnClickListener, 
         mIvSkip.setOnClickListener(this);
         mTvSkip.setOnClickListener(this);
         mInterestAdapter.setOnItemClickListener(this);
+        mInterestView.setOnItemClickToRemove(new InterestView.OnItemClickToRemove() {
+            @Override
+            public void onRemove(InterestBean bean) {
+                if (bean==null){
+                    return;
+                }
+                mSelectedMap.remove(bean.getId());
+                mInterestAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void initData() {
@@ -172,8 +182,8 @@ public class InterestActivity extends Activity implements View.OnClickListener, 
 
         } else {
             mSelectedMap.put(bean.getId(), bean);
-            View view = mInterestView.addItem(bean);
-            showAddAnim(itemView, bean, view);
+            mInterestView.addItem(bean);
+            showAddAnim(itemView, bean);
             mInterestAdapter.setNeedShowAnimal(false);
             mInterestAdapter.notifyDataSetChanged();
         }
@@ -254,7 +264,7 @@ public class InterestActivity extends Activity implements View.OnClickListener, 
     }
 
 
-    private void showAddAnim(View itemView, InterestBean bean, final View desView) {
+    private void showAddAnim(View itemView, InterestBean bean) {
         show(mAnimAvatar, bean.getUrl());
 
         int[] startLocation = new int[2];
@@ -303,18 +313,15 @@ public class InterestActivity extends Activity implements View.OnClickListener, 
             @Override
             public void onAnimationStart(Animator animation) {
                 mAnimAvatar.setVisibility(View.VISIBLE);
-                desView.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 mAnimAvatar.setVisibility(View.GONE);
-                desView.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
-                desView.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -322,7 +329,7 @@ public class InterestActivity extends Activity implements View.OnClickListener, 
 
             }
         });
-        set.setDuration(500);
+        set.setDuration(300);
         set.play(scalAnim).with(animator);
         set.start();
 
