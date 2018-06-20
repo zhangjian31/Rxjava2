@@ -95,16 +95,16 @@ public class WindowUtil {
      */
     @SuppressLint("RestrictedApi")
     public static void hideSystemBar(Context context) {
-        AppCompatActivity appCompatActivity = getAppCompActivity(context);
-        if (appCompatActivity != null) {
-            ActionBar ab = appCompatActivity.getSupportActionBar();
-            if (ab != null) {
-                ab.setShowHideAnimationEnabled(false);
-                ab.hide();
-            }
-        }
-        scanForActivity(context).getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        hideNavigationBar(context);
+//        AppCompatActivity appCompatActivity = getAppCompActivity(context);
+//        if (appCompatActivity != null) {
+//            ActionBar ab = appCompatActivity.getSupportActionBar();
+//            if (ab != null) {
+//                ab.setShowHideAnimationEnabled(false);
+//                ab.hide();
+//            }
+//        }
+//        scanForActivity(context).getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        hideNavigationBar(context);
     }
 
     /**
@@ -112,16 +112,16 @@ public class WindowUtil {
      */
     @SuppressLint("RestrictedApi")
     public static void showSystemBar(final Context context) {
-        scanForActivity(context).getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        showNavigationBar(context);
-        AppCompatActivity appCompatActivity = getAppCompActivity(context);
-        if (appCompatActivity != null) {
-            ActionBar ab = appCompatActivity.getSupportActionBar();
-            if (ab != null) {
-                ab.setShowHideAnimationEnabled(false);
-                ab.show();
-            }
-        }
+//        scanForActivity(context).getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        showNavigationBar(context);
+//        AppCompatActivity appCompatActivity = getAppCompActivity(context);
+//        if (appCompatActivity != null) {
+//            ActionBar ab = appCompatActivity.getSupportActionBar();
+//            if (ab != null) {
+//                ab.setShowHideAnimationEnabled(false);
+//                ab.show();
+//            }
+//        }
     }
 
     /**
