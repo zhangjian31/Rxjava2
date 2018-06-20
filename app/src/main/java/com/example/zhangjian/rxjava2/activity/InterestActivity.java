@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.BounceInterpolator;
@@ -45,7 +46,7 @@ import java.util.Set;
 
 public class InterestActivity extends Activity implements View.OnClickListener, InterestAdapter.OnItemClickListener {
 
-    private Button mBtnChange, mBtnOk;
+    private TextView mBtnChange, mBtnOk;
     private ImageView mIvSkip;
     private TextView mTvSkip;
     private InterestView mInterestView;
@@ -77,8 +78,8 @@ public class InterestActivity extends Activity implements View.OnClickListener, 
         mIvSkip = (ImageView) findViewById(R.id.iv_skip);
         mTvSkip = (TextView) findViewById(R.id.tv_skip);
         mInterestView = (InterestView) findViewById(R.id.interestView);
-        mBtnChange = (Button) findViewById(R.id.btn_change);
-        mBtnOk = (Button) findViewById(R.id.btn_ok);
+        mBtnChange = (TextView) findViewById(R.id.btn_change);
+        mBtnOk = (TextView) findViewById(R.id.btn_ok);
         mRecycleview.setLayoutManager(new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false));
         mInterestAdapter = new InterestAdapter();
         mRecycleview.setAdapter(mInterestAdapter);
@@ -156,6 +157,8 @@ public class InterestActivity extends Activity implements View.OnClickListener, 
         }
         mCurPage++;
         mInterestAdapter.setData(list, mSelectedMap);
+        Log.d("screen=",WindowUtil.getScreenWidth(this)+"  "+WindowUtil.getScreenHeight(this,false)+"  "+WindowUtil.getScreenHeight(this,true));
+
     }
 
 

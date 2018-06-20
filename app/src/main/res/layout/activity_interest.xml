@@ -8,6 +8,7 @@
     android:background="#ffffff"
     tools:csontext="com.example.zhangjian.rxjava2.activity.InterestActivity">
 
+
     <RelativeLayout
         android:id="@+id/skip_layout"
         android:layout_width="match_parent"
@@ -49,39 +50,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/interestView"
+        android:layout_marginTop="0dp"
         android:paddingLeft="23dp"
-        android:paddingRight="23dp"
-        android:layout_marginTop="0dp" />
+        android:paddingRight="23dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/recycleview"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:gravity="center_vertical"
+        android:layout_marginBottom="30dp"
+        android:gravity="bottom"
         android:paddingLeft="30dp"
         android:paddingRight="30dp">
 
-        <Button
+        <TextView
             android:id="@+id/btn_change"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
+            android:background="@drawable/btn_interest_change"
             android:gravity="center"
             android:text="换一换"
-            android:background="@drawable/btn_interest_change"
             android:textSize="21sp" />
 
-        <Button
+        <TextView
             android:id="@+id/btn_ok"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_weight="1"
+            android:background="@drawable/btn_interest_ok"
             android:gravity="center"
             android:text="选好了"
-            android:background="@drawable/btn_interest_ok"
             android:textSize="21sp" />
     </LinearLayout>
 
